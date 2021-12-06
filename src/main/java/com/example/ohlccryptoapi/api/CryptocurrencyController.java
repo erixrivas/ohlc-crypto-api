@@ -1,6 +1,6 @@
 package com.example.ohlccryptoapi.api;
 
-import com.example.ohlccryptoapi.domain.service.GetCryptocurrencyService;
+import com.example.ohlccryptoapi.domain.Adapter.GetCryptocurrencyServiceApiAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +13,12 @@ import java.security.Principal;
 @RestController
 public class CryptocurrencyController {
     @Autowired
-    GetCryptocurrencyService getCryptocurrencyService;
+    GetCryptocurrencyServiceApiAdapter getCryptocurrencyServiceApiAdapter;
     @GetMapping("/Cryptocurrency/{name}")
     Mono <GetCryptocurrencyApiResponseDto> getCryptocurrency(
             @AuthenticationPrincipal Mono<Principal> principalMono,
             @PathVariable String name) {
-        return principalMono.flatMap (principal -> getCryptocurrencyService.get(principal.getName(),name
+        return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.get(principal.getName(),name
         ).map(
                 cryptocurrency-> new GetCryptocurrencyApiResponseDto(cryptocurrency.getName(),cryptocurrency.getSymbol())
         ));

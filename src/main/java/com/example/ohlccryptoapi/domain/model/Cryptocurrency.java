@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cryptocurrency {
+    private long id;
     private String name;
     private String Symbol;
 
