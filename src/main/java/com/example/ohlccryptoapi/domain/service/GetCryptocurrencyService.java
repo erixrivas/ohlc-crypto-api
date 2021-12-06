@@ -4,7 +4,7 @@ import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
 import reactor.core.publisher.Mono;
 
 public class GetCryptocurrencyService {
-    public Mono<Cryptocurrency> get(String name) {
+    public Mono<Cryptocurrency> get(String user,String name) {
         return Mono.empty();
     }
 }

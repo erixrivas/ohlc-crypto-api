@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -23,10 +24,12 @@ public class getCryptocurrencyValueApiTest {
 
     private static Faker faker = Faker.instance();
     @Test
+    @WithMockUser ("ChuckNorris")
     void get(){
         String name = "Bitcoin";
         Cryptocurrency fakeCriptocurrency= getFakeCriptocurrency(name);
-        when(getCryptocurrencyService.get(name)).thenReturn(Mono.just(fakeCriptocurrency));
+        String user="ChuckNorris";
+        when(getCryptocurrencyService.get(user,name)).thenReturn(Mono.just(fakeCriptocurrency));
         client.get().uri("/Cryptocurrency/"+name)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
