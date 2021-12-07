@@ -19,10 +19,6 @@ public class getConfigServiceApiAdapter {
 //    }
 
 
-    @Bean
-    CryptoCurrencyService cryptoCurrencyService(final CryptocurrencyRepository cryptocurrencyRepository) {
-        return new DomainCryptoCurrencyService(cryptocurrencyRepository);
-    }
 
 
 //
