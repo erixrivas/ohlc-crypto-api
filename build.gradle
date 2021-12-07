@@ -23,11 +23,15 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.20'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-parent', version: '2.6.1', ext: 'pom'
 
     compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'org.flywaydb:flyway-core'
+
 
 
 	annotationProcessor 'org.projectlombok:lombok'
