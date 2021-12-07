@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-@Repository
+
 public interface CryptocurrencyJpaEntityRepository extends JpaRepository<CryptocurrencyJpaEntity,Long> {
 
     Optional<CryptocurrencyJpaEntity> findByName(String name);
-    Optional<CryptocurrencyJpaEntity> findById(String Id);
+    Optional<CryptocurrencyJpaEntity> findById(Long Id);
 }

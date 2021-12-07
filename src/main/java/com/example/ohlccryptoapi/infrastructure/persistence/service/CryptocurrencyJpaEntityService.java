@@ -8,8 +8,9 @@ import com.example.ohlccryptoapi.infrastructure.persistence.repository.jpa.Crypt
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,22 +18,24 @@ import java.util.Optional;
 @Transactional
 public class CryptocurrencyJpaEntityService implements  ICURDSERVICE<Cryptocurrency,CryptocurrencyJpaEntity,Long> , CryptoCurrencyService {
  private CryptocurrencyJpaEntityRepository cryptocurrencyJpaEntityRepository;
+
     @Autowired
     public CryptocurrencyJpaEntityService(CryptocurrencyJpaEntityRepository cryptocurrencyJpaEntityRepository) {
-        this.cryptocurrencyJpaEntityRepository = cryptocurrencyJpaEntityRepository;
-    }
+        super();
+       this.cryptocurrencyJpaEntityRepository = cryptocurrencyJpaEntityRepository;
+   }
 
 
 
 
     @Override
     public CryptocurrencyJpaEntity transformToEntity(Cryptocurrency domainModel) {
-        return null;
+        return new CryptocurrencyJpaEntity(0,"","");
     }
 
     @Override
     public Cryptocurrency transformToDomainModel(CryptocurrencyJpaEntity Entity) {
-        return null;
+           return new Cryptocurrency(0,"","");
     }
 
     @Override
