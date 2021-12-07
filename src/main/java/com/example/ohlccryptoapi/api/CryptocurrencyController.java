@@ -18,9 +18,9 @@ public class CryptocurrencyController {
     Mono <GetCryptocurrencyApiResponseDto> getCryptocurrency(
             @AuthenticationPrincipal Mono<Principal> principalMono,
             @PathVariable String name) {
-        return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.get(principal.getName(),name
+        return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.get(principal.getName(),name)
         ).map(
                 cryptocurrency-> new GetCryptocurrencyApiResponseDto(cryptocurrency.getName(),cryptocurrency.getSymbol())
-        ));
+        ).doOnError(e->new RuntimeException(e) );
     }
 }
