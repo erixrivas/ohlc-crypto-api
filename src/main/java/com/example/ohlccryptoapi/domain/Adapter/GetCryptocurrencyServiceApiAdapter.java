@@ -1,7 +1,7 @@
 package com.example.ohlccryptoapi.domain.Adapter;
 
 import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
-import com.example.ohlccryptoapi.infrastructure.persistence.service.CryptocurrencyJpaEntityService;
+import com.example.ohlccryptoapi.persistence.service.CryptocurrencyJpaEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -17,7 +17,7 @@ public class GetCryptocurrencyServiceApiAdapter {
 //       this.cryptocurrencyJpaEntityService = cryptocurrencyJpaEntityService;
 //   }
 
-    public Mono<Cryptocurrency> get(String user,String name)  {
+    public Mono<Cryptocurrency> get(String username,String name)  {
         return Mono.just(cryptocurrencyJpaEntityService.findCryptoCurrencyByName(name).get());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.ohlccryptoapi.api;
+package com.example.ohlccryptoapi.api.ohlc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

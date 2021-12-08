@@ -1,14 +1,17 @@
 package com.example.ohlccryptoapi.api;
 
+import com.example.ohlccryptoapi.api.ohlc.GetCryptocurrencyApiResponseDto;
 import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
 import com.example.ohlccryptoapi.domain.Adapter.GetCryptocurrencyServiceApiAdapter;
 import com.example.ohlccryptoapi.domain.service.DomainCryptoCurrencyService;
+import com.example.ohlccryptoapi.infrastructure.config.security.JwtTokenProvider;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -26,7 +29,15 @@ public class getCryptocurrencyValueApiTest {
     GetCryptocurrencyServiceApiAdapter getCryptocurrencyServiceApiAdapter;
     @MockBean
     DomainCryptoCurrencyService domainCryptoCurrencyService;
+
     private static Faker faker = Faker.instance();
+
+    @MockBean
+    private JwtTokenProvider tokenProvider;
+
+    @MockBean
+    private ReactiveAuthenticationManager authenticationManager;
+
     @Test
     @WithMockUser ("ChuckNorris")
     void get(){

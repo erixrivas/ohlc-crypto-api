@@ -1,8 +1,7 @@
-package com.example.ohlccryptoapi.infrastructure.persistence.repository.jpa;
+package com.example.ohlccryptoapi.persistence.repository.jpa;
 
-import com.example.ohlccryptoapi.infrastructure.persistence.JpaEntity.CryptocurrencyJpaEntity;
+import com.example.ohlccryptoapi.persistence.JpaEntity.CryptocurrencyJpaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

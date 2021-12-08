@@ -1,4 +1,4 @@
-package com.example.ohlccryptoapi.persistence.JpaEntity;
+package com.example.ohlccryptoapi.persistence.JpaEntity.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,14 +11,16 @@ import javax.persistence.*;
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
-public class CryptocurrencyJpaEntity {
+public class RoleJpaEntity {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
+
     @Column
     private String name;
-    @Column
-    private String Symbol;
 
+    @Column
+    private String description;
 
 }

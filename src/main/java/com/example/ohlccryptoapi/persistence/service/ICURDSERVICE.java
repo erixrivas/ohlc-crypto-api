@@ -1,4 +1,4 @@
-package com.example.ohlccryptoapi.infrastructure.persistence.service;
+package com.example.ohlccryptoapi.persistence.service;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

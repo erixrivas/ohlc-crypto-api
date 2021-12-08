@@ -1,10 +1,9 @@
-package com.example.ohlccryptoapi.infrastructure.persistence.service;
+package com.example.ohlccryptoapi.persistence.service;
 
 import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
-import com.example.ohlccryptoapi.domain.repository.CryptocurrencyRepository;
 import com.example.ohlccryptoapi.domain.service.CryptoCurrencyService;
-import com.example.ohlccryptoapi.infrastructure.persistence.JpaEntity.CryptocurrencyJpaEntity;
-import com.example.ohlccryptoapi.infrastructure.persistence.repository.jpa.CryptocurrencyJpaEntityRepository;
+import com.example.ohlccryptoapi.persistence.JpaEntity.CryptocurrencyJpaEntity;
+import com.example.ohlccryptoapi.persistence.repository.jpa.CryptocurrencyJpaEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
