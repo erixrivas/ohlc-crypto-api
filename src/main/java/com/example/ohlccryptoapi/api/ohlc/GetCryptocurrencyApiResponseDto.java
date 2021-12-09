@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetCryptocurrencyApiResponseDto {
     String name;
-    String Symbol;
+    String symbol;
 }

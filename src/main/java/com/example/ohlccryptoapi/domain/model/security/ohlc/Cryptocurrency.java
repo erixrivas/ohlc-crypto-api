@@ -1,4 +1,4 @@
-package com.example.ohlccryptoapi.domain.model;
+package com.example.ohlccryptoapi.domain.model.security.ohlc;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,4 +12,8 @@ public class Cryptocurrency {
     private String name;
     private String Symbol;
 
+    public Cryptocurrency(String name, String symbol) {
+        this.name = name;
+        Symbol = symbol;
+    }
 }

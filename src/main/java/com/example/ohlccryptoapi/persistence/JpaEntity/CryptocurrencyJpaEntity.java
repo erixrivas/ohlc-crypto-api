@@ -20,5 +20,8 @@ public class CryptocurrencyJpaEntity {
     @Column
     private String Symbol;
 
-
+    public CryptocurrencyJpaEntity(String name, String symbol) {
+        this.name = name;
+        Symbol = symbol;
+    }
 }

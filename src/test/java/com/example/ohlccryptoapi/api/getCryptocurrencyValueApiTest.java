@@ -1,7 +1,7 @@
 package com.example.ohlccryptoapi.api;
 
 import com.example.ohlccryptoapi.api.ohlc.GetCryptocurrencyApiResponseDto;
-import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
 import com.example.ohlccryptoapi.domain.Adapter.GetCryptocurrencyServiceApiAdapter;
 import com.example.ohlccryptoapi.domain.service.DomainCryptoCurrencyService;
 import com.example.ohlccryptoapi.infrastructure.config.security.JwtTokenProvider;

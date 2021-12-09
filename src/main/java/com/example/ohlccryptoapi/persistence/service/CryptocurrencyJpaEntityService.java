@@ -1,6 +1,6 @@
 package com.example.ohlccryptoapi.persistence.service;
 
-import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
 import com.example.ohlccryptoapi.domain.service.CryptoCurrencyService;
 import com.example.ohlccryptoapi.persistence.JpaEntity.CryptocurrencyJpaEntity;
 import com.example.ohlccryptoapi.persistence.repository.jpa.CryptocurrencyJpaEntityRepository;
@@ -29,12 +29,25 @@ public class CryptocurrencyJpaEntityService implements  ICURDSERVICE<Cryptocurre
 
     @Override
     public CryptocurrencyJpaEntity transformToEntity(Cryptocurrency domainModel) {
-        return new CryptocurrencyJpaEntity(0,"","");
+        if (domainModel!=null){
+            if(domainModel.getId()!=null)
+            return new CryptocurrencyJpaEntity(domainModel.getId() , domainModel.getName(), domainModel.getSymbol());
+            else return new CryptocurrencyJpaEntity(domainModel.getName(), domainModel.getSymbol());
+        }
+        else return  null;
+
+
     }
 
     @Override
-    public Cryptocurrency transformToDomainModel(CryptocurrencyJpaEntity Entity) {
-           return new Cryptocurrency(0,"","");
+    public Cryptocurrency transformToDomainModel(CryptocurrencyJpaEntity entity) {
+        if (entity!=null) {
+            if (entity.getId()!=null)
+            return new Cryptocurrency(entity.getId(), entity.getName(), entity.getSymbol());
+            else
+                return new Cryptocurrency(entity.getName(), entity.getSymbol());
+        }
+        else return null;
     }
 
     @Override
@@ -64,6 +77,6 @@ public class CryptocurrencyJpaEntityService implements  ICURDSERVICE<Cryptocurre
 
     @Override
     public void deleteCryptocurrency(Cryptocurrency cryptocurrency) {
-
+        cryptocurrencyJpaEntityRepository.delete(transformToEntity(cryptocurrency));
     }
 }

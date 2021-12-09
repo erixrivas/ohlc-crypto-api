@@ -1,6 +1,6 @@
 package com.example.ohlccryptoapi.domain.service;
 
-import com.example.ohlccryptoapi.domain.model.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
 import com.example.ohlccryptoapi.domain.repository.CryptocurrencyRepository;
 
 import java.util.List;
