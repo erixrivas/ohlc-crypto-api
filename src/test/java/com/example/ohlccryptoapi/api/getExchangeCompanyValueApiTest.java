@@ -1,13 +1,12 @@
 package com.example.ohlccryptoapi.api;
 
 import com.example.ohlccryptoapi.api.ohlc.ExchangeCompanyApiResponseDto;
-import com.example.ohlccryptoapi.api.ohlc.GetCryptocurrencyApiResponseDto;
-import com.example.ohlccryptoapi.domain.Adapter.ExchangeCompanyServiceApiAdapter;
-import com.example.ohlccryptoapi.domain.Adapter.OHLCValueServiceApiAdapter;
-import com.example.ohlccryptoapi.domain.model.ohlc.Cryptocurrency;
+
 import com.example.ohlccryptoapi.domain.Adapter.GetCryptocurrencyServiceApiAdapter;
+import com.example.ohlccryptoapi.domain.Adapter.OHLCValueServiceApiAdapter;
 import com.example.ohlccryptoapi.domain.model.ohlc.ExchangeCompany;
-import com.example.ohlccryptoapi.domain.service.ohlc.DomainCryptoCurrencyService;
+import com.example.ohlccryptoapi.domain.Adapter.ExchangeCompanyServiceApiAdapter;
+import com.example.ohlccryptoapi.domain.service.ohlc.DomainExchangeCompanyService;
 import com.example.ohlccryptoapi.infrastructure.config.security.JwtTokenProvider;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
@@ -30,19 +29,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @WebFluxTest
-public class getCryptocurrencyValueApiTest {
+public class getExchangeCompanyValueApiTest {
     @Autowired private WebTestClient client;
+    @MockBean
+    ExchangeCompanyServiceApiAdapter ExchangeCompanyServiceApiAdapter;
     @MockBean
     GetCryptocurrencyServiceApiAdapter getCryptocurrencyServiceApiAdapter;
     @MockBean
-    com.example.ohlccryptoapi.domain.Adapter.ExchangeCompanyServiceApiAdapter ExchangeCompanyServiceApiAdapter;
-
+    DomainExchangeCompanyService domainExchangeCompanyService;
     @MockBean
     OHLCValueServiceApiAdapter ohlcValueServiceApiAdapter;
-
-    @MockBean
-    DomainCryptoCurrencyService domainCryptoCurrencyService;
-
     private static Faker faker = Faker.instance();
 
     @MockBean
@@ -53,82 +49,105 @@ public class getCryptocurrencyValueApiTest {
 
     @Test
     @WithMockUser ("ChuckNorris")
-    void get(){
+    void getOne(){
         var name = "Bitcoin";
-        Cryptocurrency fakeCriptocurrency= getFakeCriptocurrency(name);
+        ExchangeCompany fakeCriptocurrency= getFakeExchangeCompany(name);
         var user="ChuckNorris";
-        when(getCryptocurrencyServiceApiAdapter.get(user,name)).thenReturn(Mono.just(fakeCriptocurrency));
-        getCryptocurrencyRequest(name)
+        when(ExchangeCompanyServiceApiAdapter.get(user,name)).thenReturn(Mono.just(fakeCriptocurrency));
+        getExchangeCompanyRequest(name)
                 //pruebas
                 .expectStatus().isOk()
-                .expectBody(GetCryptocurrencyApiResponseDto.class)
+                .expectBody(ExchangeCompanyApiResponseDto.class)
                 .value(dto->assertAll(
                                 ()->  assertThat(dto.getName()).isEqualTo (name) ,
                                 ()->   assertThat(dto.getName()).isEqualTo (fakeCriptocurrency.getName()) ,
-                                ()->   assertThat(dto.getSymbol()).isEqualTo (fakeCriptocurrency.getSymbol())
+                                ()->   assertThat(dto.getDescription()).isEqualTo (fakeCriptocurrency.getDescription())
                 ));
     }
-    @Test
-    @WithMockUser ("ChuckNorris")
-    void getEmpty(){
-        var name = "Bitcoin";
-        Cryptocurrency fakeCriptocurrency= getFakeCriptocurrency(name);
-        var user="ChuckNorris";
-        when(getCryptocurrencyServiceApiAdapter.get(user,name)).thenReturn(Mono.empty());
-        getCryptocurrencyRequest(name)
-                //pruebas
-                .expectStatus().isOk().expectBody(Void.class);
-    }
+
+
     @Test
     @WithMockUser ("ChuckNorris")
     void getAll(){
         var name1 = "XSD";
-        var fakeCriptocurrency1= getFakeCriptocurrency(name1);
+        ExchangeCompany fakeCriptocurrency1= getFakeExchangeCompany(name1);
         var name2 = "CDF";
-        var fakeCriptocurrency2= getFakeCriptocurrency(name2);
+        ExchangeCompany fakeCriptocurrency2= getFakeExchangeCompany(name2);
 
         var user="ChuckNorris";
         var list= Arrays.asList(fakeCriptocurrency1,fakeCriptocurrency2);
         var monoList=Mono.just(list.stream()
                 .map( ExchangeCompany->
-                        new GetCryptocurrencyApiResponseDto(ExchangeCompany.getName(),ExchangeCompany.getSymbol())
+                        new ExchangeCompanyApiResponseDto(ExchangeCompany.getName(),ExchangeCompany.getDescription())
 
                 ).collect(Collectors.toList()));
         var flux=monoList .flatMapIterable(lista -> lista);
-        when(getCryptocurrencyServiceApiAdapter.getAll(user)).thenReturn(monoList);
-        getCryptocurrencyRequest()
+        when(ExchangeCompanyServiceApiAdapter.getAll(user)).thenReturn(monoList);
+        getExchangeCompanyRequest()
                 //pruebas
                 .expectStatus().isOk()
-                .expectBodyList(GetCryptocurrencyApiResponseDto.class)
+                .expectBodyList(ExchangeCompanyApiResponseDto.class)
                 .value(dto->assertAll(
                         ()->  assertThat(dto.size()).isEqualTo (list.size())
                 ));
     }
+
+    @Test
+    @WithMockUser ("ChuckNorris")
+    void getEmpty(){
+        var name = "Bitcoin";
+        ExchangeCompany fakeCriptocurrency= getFakeExchangeCompany(name);
+        var user="ChuckNorris";
+        when(ExchangeCompanyServiceApiAdapter.get(user,name)).thenReturn(Mono.empty());
+        getExchangeCompanyRequest(name)
+                //pruebas
+                .expectStatus().isOk().expectBody(Void.class);
+    }
+
     @Test
     @WithAnonymousUser
     void anonymousUserGet(){
-        getCryptocurrencyRequest("Bitcoin").expectStatus().isUnauthorized();
+        getExchangeCompanyRequest("Bitcoin").expectStatus().isUnauthorized();
     }
 
     @Test
     void UnauthorizedUserGet(){
-        getCryptocurrencyRequest("Bitcoin").expectStatus().isUnauthorized();
+        getExchangeCompanyRequest("Bitcoin").expectStatus().isUnauthorized();
+    }
+
+    @Test
+    void UnauthorizedUserPut(){
+        putExchangeCompanyRequest("Bitcoin").expectStatus().isForbidden();
     }
 
 
-    private WebTestClient.ResponseSpec getCryptocurrencyRequest(String name) {
-        return client.get().uri("/Cryptocurrency/" + name)
+    @Test
+    void UnauthorizedGetAll(){
+        getExchangeCompanyRequest().expectStatus().isUnauthorized();
+    }
+
+
+    private WebTestClient.ResponseSpec getExchangeCompanyRequest(String name) {
+        return client.get().uri("/ExchangeCompany/" + name)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
     }
 
-    private WebTestClient.ResponseSpec getCryptocurrencyRequest() {
-        return client.get().uri("/Cryptocurrency")
+    private WebTestClient.ResponseSpec putExchangeCompanyRequest(String name) {
+        return client.put().uri("/ExchangeCompany/" + name)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange();
     }
-    private Cryptocurrency getFakeCriptocurrency(String name) {
-        return new Cryptocurrency(faker.random().nextInt(0,100), name, faker.artist().name());
+
+
+
+    private WebTestClient.ResponseSpec getExchangeCompanyRequest() {
+        return client.get().uri("/ExchangeCompany")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange();
+    }
+    private ExchangeCompany getFakeExchangeCompany(String name) {
+        return new ExchangeCompany(faker.random().nextInt(0,100), name, faker.artist().name());
     }
 
 

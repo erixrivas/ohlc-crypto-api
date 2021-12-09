@@ -1,7 +1,7 @@
 package com.example.ohlccryptoapi.domain.Adapter;
 
 import com.example.ohlccryptoapi.api.ohlc.GetCryptocurrencyApiResponseDto;
-import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.model.ohlc.Cryptocurrency;
 import com.example.ohlccryptoapi.persistence.service.CryptocurrencyJpaEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

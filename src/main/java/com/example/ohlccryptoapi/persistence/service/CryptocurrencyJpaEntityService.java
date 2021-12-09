@@ -1,7 +1,7 @@
 package com.example.ohlccryptoapi.persistence.service;
 
-import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
-import com.example.ohlccryptoapi.domain.service.CryptoCurrencyService;
+import com.example.ohlccryptoapi.domain.model.ohlc.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.service.ohlc.CryptoCurrencyService;
 import com.example.ohlccryptoapi.persistence.JpaEntity.CryptocurrencyJpaEntity;
 import com.example.ohlccryptoapi.persistence.repository.jpa.CryptocurrencyJpaEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class CryptocurrencyJpaEntityService implements  ICURDSERVICE<Cryptocurrency,CryptocurrencyJpaEntity,Long> , CryptoCurrencyService {
+public class CryptocurrencyJpaEntityService implements  ICURDSERVICE<Cryptocurrency,CryptocurrencyJpaEntity,Integer> , CryptoCurrencyService {
  private CryptocurrencyJpaEntityRepository cryptocurrencyJpaEntityRepository;
 
     @Autowired
@@ -51,12 +51,12 @@ public class CryptocurrencyJpaEntityService implements  ICURDSERVICE<Cryptocurre
     }
 
     @Override
-    public JpaRepository<CryptocurrencyJpaEntity, Long> getRepository() {
+    public JpaRepository<CryptocurrencyJpaEntity, Integer> getRepository() {
         return cryptocurrencyJpaEntityRepository;
     }
 
     @Override
-    public Optional<Cryptocurrency> findCryptoCurrencyById(long id) {
+    public Optional<Cryptocurrency> findCryptoCurrencyById(Integer id) {
         return cryptocurrencyJpaEntityRepository.findById(id).map(entity->transformToDomainModel(entity) );
     }
 

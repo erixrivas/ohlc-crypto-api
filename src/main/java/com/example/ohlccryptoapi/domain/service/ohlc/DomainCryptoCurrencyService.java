@@ -1,7 +1,7 @@
-package com.example.ohlccryptoapi.domain.service;
+package com.example.ohlccryptoapi.domain.service.ohlc;
 
-import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
-import com.example.ohlccryptoapi.domain.repository.CryptocurrencyRepository;
+import com.example.ohlccryptoapi.domain.model.ohlc.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.repository.ohlc.CryptocurrencyRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +15,7 @@ public class DomainCryptoCurrencyService implements  CryptoCurrencyService{
     }
 
     @Override
-    public Optional<Cryptocurrency> findCryptoCurrencyById(long id) {
+    public Optional<Cryptocurrency> findCryptoCurrencyById(Integer id) {
         return cryptocurrencyRepository.findById(id);
     }
 

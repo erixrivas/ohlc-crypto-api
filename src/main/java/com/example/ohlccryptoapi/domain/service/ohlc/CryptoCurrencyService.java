@@ -1,13 +1,13 @@
-package com.example.ohlccryptoapi.domain.service;
+package com.example.ohlccryptoapi.domain.service.ohlc;
 
-import com.example.ohlccryptoapi.domain.model.security.ohlc.Cryptocurrency;
+import com.example.ohlccryptoapi.domain.model.ohlc.Cryptocurrency;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CryptoCurrencyService {
 
-    Optional<Cryptocurrency> findCryptoCurrencyById(long id);
+    Optional<Cryptocurrency> findCryptoCurrencyById(Integer id);
 
     Optional<Cryptocurrency> findCryptoCurrencyByName(String name);
 
