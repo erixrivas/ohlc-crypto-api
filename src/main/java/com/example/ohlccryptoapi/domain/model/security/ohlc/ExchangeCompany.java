@@ -14,6 +14,6 @@ public class ExchangeCompany {
 
     public ExchangeCompany(String name, String description) {
         this.name = name;
-        description = description;
+       this.description = description;
     }
 }
