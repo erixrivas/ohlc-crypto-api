@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 
@@ -15,9 +16,11 @@ public class CryptocurrencyController {
     @Autowired
     GetCryptocurrencyServiceApiAdapter getCryptocurrencyServiceApiAdapter;
     @GetMapping("/{name}")
+
     Mono <GetCryptocurrencyApiResponseDto> getCryptocurrency(
-            @AuthenticationPrincipal Mono<UserDetails> principalMono,
+         @ApiIgnore  @AuthenticationPrincipal Mono<UserDetails> principalMono,
             @PathVariable String name) {
+
         return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.get(principal.getUsername(),name)
         ).map(
                 cryptocurrency-> new GetCryptocurrencyApiResponseDto(cryptocurrency.getName(),cryptocurrency.getSymbol())
@@ -27,13 +30,13 @@ public class CryptocurrencyController {
 
     }
     @GetMapping
-    public Flux<GetCryptocurrencyApiResponseDto> getAll(  @AuthenticationPrincipal Mono<UserDetails> principalMono) {
+    public Flux<GetCryptocurrencyApiResponseDto> getAll(  @ApiIgnore  @AuthenticationPrincipal Mono<UserDetails> principalMono) {
         System.out.println("::will returns ALL Students records::");
         return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.getAll(principal.getUsername())
         ) .flatMapIterable(list -> list) ;
     }
     @PostMapping
-    public Mono<GetCryptocurrencyApiResponseDto> save(@AuthenticationPrincipal Mono<UserDetails> principalMono ,
+    public Mono<GetCryptocurrencyApiResponseDto> save(  @ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,
                      @RequestBody final GetCryptocurrencyApiResponseDto getCryptocurrencyApiResponseDto) {
         System.out.println("will insert the record :: "+ getCryptocurrencyApiResponseDto.getName() + " :: " + getCryptocurrencyApiResponseDto.getSymbol());
         return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.save(principal.getUsername(),getCryptocurrencyApiResponseDto)
@@ -43,8 +46,8 @@ public class CryptocurrencyController {
     }
 
     @PutMapping("{name}")
-    public Mono<GetCryptocurrencyApiResponseDto> updateByname(@AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name,
-                             @RequestBody final  GetCryptocurrencyApiResponseDto getCryptocurrencyApiResponseDto) {
+    public Mono<GetCryptocurrencyApiResponseDto> updateByName(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono , @PathVariable("name") final String name,
+                                                              @RequestBody final  GetCryptocurrencyApiResponseDto getCryptocurrencyApiResponseDto) {
         System.out.println("::update the Student record::");
         return principalMono.flatMap (principal -> getCryptocurrencyServiceApiAdapter.update(principal.getUsername(),name,getCryptocurrencyApiResponseDto)
         ).map(
@@ -56,7 +59,7 @@ public class CryptocurrencyController {
 
     }
     @DeleteMapping("{name}")
-    public Mono<GetCryptocurrencyApiResponseDto> delete(@AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name) {
+    public Mono<GetCryptocurrencyApiResponseDto> delete( @ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name) {
         System.out.println("::update the Student record::");
         return principalMono.flatMap (principal ->  getCryptocurrencyServiceApiAdapter.delete(principal.getUsername(),name)
         ).map(

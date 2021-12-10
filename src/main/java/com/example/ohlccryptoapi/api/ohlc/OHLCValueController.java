@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 
@@ -16,7 +17,7 @@ public class OHLCValueController {
     OHLCValueServiceApiAdapter OHLCValueServiceApiAdapter;
     @GetMapping("/{id}")
     Mono <OHLCValueApiResponseDto> getOHLCValue(
-            @AuthenticationPrincipal Mono<UserDetails> principalMono,
+            @ApiIgnore     @AuthenticationPrincipal Mono<UserDetails> principalMono,
             @PathVariable Integer id) {
         return principalMono.flatMap (principal -> OHLCValueServiceApiAdapter.get(principal.getUsername(),id)
         ).map(
@@ -30,13 +31,13 @@ public class OHLCValueController {
 
     }
     @GetMapping
-    public Flux<OHLCValueApiResponseDto> getAll(  @AuthenticationPrincipal Mono<UserDetails> principalMono) {
+    public Flux<OHLCValueApiResponseDto> getAll(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono) {
         System.out.println("::will returns ALL  records::");
         return principalMono.flatMap (principal -> OHLCValueServiceApiAdapter.getAll(principal.getUsername())
         ) .flatMapIterable(list -> list) ;
     }
     @PostMapping
-    public Mono<OHLCValueApiResponseDto> save(@AuthenticationPrincipal Mono<UserDetails> principalMono ,
+    public Mono<OHLCValueApiResponseDto> save(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,
                                                     @RequestBody final OHLCValueApiResponseDto OHLCValueApiResponseDto) {
         System.out.println("will insert the record :: "+ OHLCValueApiResponseDto.getId() + " :: " + OHLCValueApiResponseDto.getUnixTimestamp());
         return principalMono.flatMap (principal -> OHLCValueServiceApiAdapter.save(principal.getUsername(),OHLCValueApiResponseDto)
@@ -49,8 +50,8 @@ public class OHLCValueController {
     }
 
     @PutMapping("{id}")
-    public Mono<OHLCValueApiResponseDto> updateByname(@AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final Integer id,
-                                                            @RequestBody final  OHLCValueApiResponseDto OHLCValueApiResponseDto) {
+    public Mono<OHLCValueApiResponseDto> updateById(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono , @PathVariable("id") final Integer id,
+                                                    @RequestBody final  OHLCValueApiResponseDto OHLCValueApiResponseDto) {
 
         return principalMono.flatMap (principal -> OHLCValueServiceApiAdapter.update(principal.getUsername(),id,OHLCValueApiResponseDto)
         ).map(
@@ -65,7 +66,7 @@ public class OHLCValueController {
 
     }
     @DeleteMapping("{id}")
-    public Mono<OHLCValueApiResponseDto> delete(@AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final Integer id) {
+    public Mono<OHLCValueApiResponseDto> delete(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("id") final Integer id) {
 
         return principalMono.flatMap (principal ->  OHLCValueServiceApiAdapter.delete(principal.getUsername(),id)
         ).map(

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 
@@ -17,7 +18,7 @@ public class ExchangeCompanyController {
     ExchangeCompanyServiceApiAdapter ExchangeCompanyServiceApiAdapter;
     @GetMapping("/{name}")
     Mono <ExchangeCompanyApiResponseDto> getExchangeCompany(
-            @AuthenticationPrincipal Mono<UserDetails> principalMono,
+            @ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono,
             @PathVariable String name) {
         return principalMono.flatMap (principal -> ExchangeCompanyServiceApiAdapter.get(principal.getUsername(),name)
         ).map(
@@ -28,13 +29,13 @@ public class ExchangeCompanyController {
 
     }
     @GetMapping
-    public Flux<ExchangeCompanyApiResponseDto> getAll(  @AuthenticationPrincipal Mono<UserDetails> principalMono) {
+    public Flux<ExchangeCompanyApiResponseDto> getAll( @ApiIgnore  @AuthenticationPrincipal Mono<UserDetails> principalMono) {
         System.out.println("::will returns ALL  records::");
         return principalMono.flatMap (principal -> ExchangeCompanyServiceApiAdapter.getAll(principal.getUsername())
         ) .flatMapIterable(list -> list) ;
     }
     @PostMapping
-    public Mono<ExchangeCompanyApiResponseDto> save(@AuthenticationPrincipal Mono<UserDetails> principalMono ,
+    public Mono<ExchangeCompanyApiResponseDto> save(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,
                                                     @RequestBody final ExchangeCompanyApiResponseDto ExchangeCompanyApiResponseDto) {
         System.out.println("will insert the record :: "+ ExchangeCompanyApiResponseDto.getName() + " :: " + ExchangeCompanyApiResponseDto.getDescription());
         return principalMono.flatMap (principal -> ExchangeCompanyServiceApiAdapter.save(principal.getUsername(),ExchangeCompanyApiResponseDto)
@@ -44,7 +45,7 @@ public class ExchangeCompanyController {
     }
 
     @PutMapping("{name}")
-    public Mono<ExchangeCompanyApiResponseDto> updateByname(@AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name,
+    public Mono<ExchangeCompanyApiResponseDto> updateByname(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name,
                                                             @RequestBody final  ExchangeCompanyApiResponseDto ExchangeCompanyApiResponseDto) {
 
         return principalMono.flatMap (principal -> ExchangeCompanyServiceApiAdapter.update(principal.getUsername(),name,ExchangeCompanyApiResponseDto)
@@ -57,7 +58,7 @@ public class ExchangeCompanyController {
 
     }
     @DeleteMapping("{name}")
-    public Mono<ExchangeCompanyApiResponseDto> delete(@AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name) {
+    public Mono<ExchangeCompanyApiResponseDto> delete(@ApiIgnore @AuthenticationPrincipal Mono<UserDetails> principalMono ,@PathVariable("name") final String name) {
 
         return principalMono.flatMap (principal ->  ExchangeCompanyServiceApiAdapter.delete(principal.getUsername(),name)
         ).map(

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Map;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 public class CurrentUserController {
 
     @GetMapping()
-    public Mono<Map<String, Object>> current(@AuthenticationPrincipal Mono<UserDetails> principal) {
+    public Mono<Map<String, Object>> current(@ApiIgnore  @AuthenticationPrincipal Mono<UserDetails> principal) {
         return principal.map(user -> Map.of(
                 "name", user.getUsername(),
                 "roles", AuthorityUtils.authorityListToSet(user.getAuthorities())
